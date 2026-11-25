@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Шлях до зірок — займенник</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#a93ae0; --purple-deep:#7a1fb8; --purple-soft:#d9b3f2;
+  --lavender:#f3e4fc; --line:#c88ae8;
+  --night:#24093d; --night2:#5b1a8f;
+  --bg:#faf6fd; --surface:#ffffff; --text:#1f1529; --muted:#6a5a78;
+  --ok:#1faa59; --bad:#e5333b; --gold:#ffc52e;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#170b22; --surface:#241433; --lavender:#33204a; --line:#7d3fb0;
+    --text:#f5ecfb; --muted:#c3aed6; --purple-soft:#5d2f86; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#170b22; --surface:#241433; --lavender:#33204a; --line:#7d3fb0;
+  --text:#f5ecfb; --muted:#c3aed6; --purple-soft:#5d2f86; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Open Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.5;min-height:100vh}
+h1,h2,h3,.btn,.pill,.chip,.rank{font-family:"Poppins","Open Sans",system-ui,sans-serif}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.hidden{display:none!important}
+
+/* ---------- hero screens ---------- */
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:32px 20px;
+  background:radial-gradient(120% 90% at 0% 100%,#b23ee8 0%,transparent 60%),linear-gradient(160deg,#120420 0%,var(--night) 35%,var(--night2) 75%,#a93ae0 100%);
+  color:#fff;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(2px 2px at 12% 18%,#fff8 50%,transparent 51%),radial-gradient(1.5px 1.5px at 78% 12%,#fff9 50%,transparent 51%),radial-gradient(2px 2px at 64% 34%,#fff6 50%,transparent 51%),radial-gradient(1.5px 1.5px at 30% 62%,#fff7 50%,transparent 51%),radial-gradient(2px 2px at 88% 70%,#fff8 50%,transparent 51%),radial-gradient(1.5px 1.5px at 8% 84%,#fff6 50%,transparent 51%),radial-gradient(2px 2px at 48% 88%,#fff5 50%,transparent 51%)}
+.hero-inner{position:relative;max-width:640px;width:100%;text-align:center}
+.tiles{display:flex;gap:14px;justify-content:center;margin-bottom:28px}
+.tile{width:84px;height:84px;border-radius:22px;background:#fff;display:grid;place-items:center;font-size:40px;box-shadow:0 10px 30px #0004}
+.tile.mid{background:var(--purple)}
+.tile.mid span{width:48px;height:48px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--purple);font-size:28px;font-weight:800}
+.hero h1{font-size:clamp(40px,9vw,64px);line-height:1.05;margin:0 0 10px;font-weight:800;letter-spacing:-.5px}
+.hero .sub{font-size:20px;font-weight:600;margin:0 0 26px;opacity:.92}
+.rules{background:#ffffff14;border:1px solid #ffffff30;border-radius:20px;padding:18px 20px;text-align:left;margin:0 auto 28px;max-width:520px}
+.rules p{margin:6px 0}
+.btn{border:0;border-radius:16px;padding:14px 26px;font-weight:700;font-size:17px;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:scale(.97)}
+.btn-main{background:var(--purple);color:#fff;box-shadow:0 8px 22px #a93ae066}
+.btn-main:hover{box-shadow:0 10px 28px #a93ae099}
+.hero .btn-main{background:#fff;color:var(--purple-deep);font-size:19px;padding:16px 34px}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-bad{background:var(--bad);color:#fff}
+.btn-ghost{background:var(--lavender);color:var(--purple-deep)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn-ghost{color:#f0dcff}}
+:root[data-theme="dark"] .btn-ghost{color:#f0dcff}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:linear-gradient(90deg,var(--night),var(--purple-deep));color:#fff;padding:12px 18px;display:flex;align-items:center;gap:14px}
+body.playing::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--night)}
+.topbar h2{margin:0;font-size:18px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stars{position:relative;background:#fff;color:var(--purple-deep);border-radius:999px;padding:6px 16px;font-weight:800;font-family:"Poppins",sans-serif;font-size:18px;display:flex;align-items:center;gap:6px}
+.stars.pop{animation:pop .45s}
+.stars.hit{animation:hit .45s}
+@keyframes pop{40%{transform:scale(1.25)}}
+@keyframes hit{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.float{position:fixed;z-index:50;font-family:"Poppins",sans-serif;font-weight:800;font-size:22px;pointer-events:none;animation:floatUp 1s forwards}
+.float.minus{animation:fallAway 1s forwards}
+@keyframes floatUp{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-50px) scale(1.4)}}
+@keyframes fallAway{from{opacity:1;transform:translateY(0) rotate(0)}to{opacity:0;transform:translateY(60px) rotate(120deg) scale(.3)}}
+
+.wrap{max-width:820px;margin:0 auto;padding:24px 18px 60px}
+.section-title{display:inline-flex;align-items:center;gap:10px;background:var(--purple);color:#fff;border-radius:14px;padding:8px 18px;font-size:clamp(20px,4.5vw,26px);font-weight:700;margin:0 0 18px}
+.section-title::before{content:"›";width:30px;height:30px;border-radius:50%;background:#fff;color:var(--purple);display:grid;place-items:center;font-weight:800;line-height:1}
+.progress{height:10px;background:var(--lavender);border-radius:99px;overflow:hidden;margin-bottom:8px}
+.progress div{height:100%;background:linear-gradient(90deg,var(--purple),#d16cff);width:0;transition:width .4s}
+.counter{color:var(--muted);font-weight:600;margin-bottom:18px;font-size:15px}
+
+/* ---------- flashcard ---------- */
+.card-scene{perspective:1400px}
+.card{display:grid;transition:transform .7s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
+.card.flipped{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:24px;padding:26px 24px;min-height:340px;display:flex;flex-direction:column}
+.front{background:var(--lavender);border:2px solid var(--line)}
+.back{background:linear-gradient(150deg,var(--purple-deep),var(--purple));color:#fff;transform:rotateY(180deg)}
+.face-label{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;font-family:"Poppins",sans-serif;font-weight:700;font-size:14px;border-radius:10px;padding:5px 12px;margin-bottom:14px}
+.front .face-label{background:var(--purple);color:#fff}
+.back .face-label{background:#fff;color:var(--purple-deep)}
+.q{font-family:"Poppins",sans-serif;font-size:clamp(20px,4.4vw,26px);font-weight:600;font-style:italic;line-height:1.4;margin:0 0 18px}
+.front textarea{flex:1;min-height:110px;width:100%;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--text);padding:12px 14px;font:inherit;resize:vertical}
+.front textarea:focus{outline:none;border-color:var(--purple)}
+.a{font-family:"Poppins",sans-serif;font-size:clamp(19px,4vw,24px);font-weight:600;line-height:1.5}
+.a b{color:#ffe28a}
+.a i{display:block;margin-top:8px;background:#ffffff1f;border-radius:12px;padding:8px 12px}
+.a ul{margin:6px 0 0;padding-left:20px}
+.a li{margin:4px 0}
+.your{margin-top:auto;padding-top:14px;font-size:14px;opacity:.85;border-top:1px dashed #ffffff55}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;justify-content:center}
+.actions .btn{flex:1 1 220px}
+
+/* ---------- table game ---------- */
+.lead{color:var(--muted);margin:0 0 16px}
+.ptable{width:100%;border-collapse:collapse;background:var(--surface);border:2px solid var(--purple);border-radius:4px;overflow:hidden}
+.ptable th{background:var(--purple);color:#fff;font-family:"Poppins",sans-serif;font-size:17px;padding:10px;text-align:center}
+.ptable td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle}
+.rank{color:var(--purple);font-weight:700;text-align:center;width:38%;font-size:17px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rank{color:#d79bff}}
+:root[data-theme="dark"] .rank{color:#d79bff}
+.rank small{display:block;color:var(--text);font-family:"Open Sans",sans-serif;font-weight:400;font-size:13px;line-height:1.3}
+.zone{min-height:56px;border-radius:12px;border:2px dashed transparent;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;padding:6px;transition:background .2s,border-color .2s;cursor:pointer}
+.zone:empty::after{content:"перетягни сюди";color:var(--muted);font-size:13px;opacity:.7}
+.zone.over,.selecting .zone:hover{border-color:var(--purple);background:var(--lavender)}
+.zone.wrong{border-color:var(--bad);background:#e5333b22}
+.zone.done{background:#1faa5914}
+.pool-wrap{position:sticky;bottom:0;z-index:15;margin-top:18px;background:var(--bg);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px))}
+.pool-head{font-family:"Poppins",sans-serif;font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.pool-head span{color:var(--muted);font-family:"Open Sans",sans-serif;font-weight:600;font-size:14px}
+.pool{display:flex;flex-wrap:wrap;gap:8px;max-height:30vh;overflow-y:auto;padding:12px;border-radius:18px;background:var(--lavender);border:2px solid var(--line)}
+.chip{touch-action:none;user-select:none;-webkit-user-select:none;background:var(--surface);color:var(--text);border:2px solid var(--purple);border-radius:12px;padding:7px 14px;font-weight:600;font-size:16px;cursor:grab;transition:transform .12s,box-shadow .12s}
+.chip:hover{box-shadow:0 4px 12px #a93ae044}
+.chip.sel{background:var(--purple);color:#fff;transform:translateY(-2px)}
+.chip.dragging{opacity:.35}
+.chip.placed{background:var(--ok);border-color:var(--ok);color:#fff;cursor:default;font-size:15px;padding:4px 10px}
+.chip.shake{animation:hit .4s;border-color:var(--bad)}
+.ghost{position:fixed;z-index:60;pointer-events:none;transform:translate(-50%,-50%) rotate(-3deg);box-shadow:0 12px 26px #0005;background:var(--purple);color:#fff}
+
+/* ---------- final ---------- */
+.big-star{font-size:90px;line-height:1;animation:spin 1.2s ease-out}
+@keyframes spin{from{transform:scale(.2) rotate(-180deg);opacity:0}}
+.score{font-family:"Poppins",sans-serif;font-size:clamp(46px,12vw,72px);font-weight:800;margin:10px 0 2px}
+.score small{font-size:.4em;opacity:.75}
+.breakdown{opacity:.85;margin-bottom:22px}
+.quote{background:#fff;color:var(--purple-deep);border-radius:22px;padding:22px 24px;font-size:19px;font-weight:600;line-height:1.45;margin:0 auto 26px;max-width:540px;box-shadow:0 14px 40px #0004}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:560px){.tile{width:68px;height:68px;font-size:32px;border-radius:18px}.face{padding:20px 18px;min-height:280px}.rank{font-size:15px;width:36%}.rank small{font-size:12px}
+  .wrap{padding:18px 12px 40px}.topbar{padding:10px 12px}.topbar h2{font-size:15px}.stars{font-size:16px;padding:5px 12px}
+  .actions .btn{flex-basis:100%}.ptable td{padding:6px}.zone{min-height:50px}.pool{max-height:26vh;padding:10px}.chip{font-size:15px;padding:6px 11px}
+  .rules{padding:14px 16px;font-size:15px}.hero .sub{font-size:17px}.quote{font-size:17px;padding:18px}}
+@media (min-width:561px) and (max-width:1024px){.wrap{max-width:760px}.chip{font-size:17px;padding:8px 16px}}
+@media (min-width:1100px){.wrap{max-width:900px}}
+@media (max-height:520px) and (orientation:landscape){.face{min-height:200px}.pool{max-height:34vh}.hero{padding:20px}.tiles{display:none}.hero h1{font-size:40px}}
+</style>
+</head>
+<body>
+
+<!-- START -->
+<section id="start" class="hero">
+  <div class="hero-inner">
+    <div class="tiles"><div class="tile">👩‍💻</div><div class="tile mid"><span>›</span></div><div class="tile">⭐</div></div>
+    <h1>Шлях до зірок</h1>
+    <p class="sub">Займенник як частина мови</p>
+    <div class="rules">
+      <p>⭐ <b>Етап 1.</b> Прочитай речення на картці, усно назви займенники та їхній розряд, потім переверни картку й перевір себе.</p>
+      <p>⭐ <b>Етап 2.</b> Перетягни займенники до таблиці «Розряди займенників».</p>
+      <p>✨ За правильну відповідь отримуєш зірку, за помилку одна зірка зникає.</p>
+    </div>
+    <button class="btn btn-main" id="startBtn">Почати подорож</button>
+  </div>
+</section>
+
+<!-- GAME -->
+<section id="game" class="hidden">
+  <div class="topbar">
+    <h2 id="stageName">Етап 1 · Флешкарти</h2>
+    <div class="stars" id="stars" aria-live="polite">⭐ <span id="starCount">0</span></div>
+  </div>
+
+  <!-- stage 1 -->
+  <div class="wrap" id="stage1">
+    <div class="section-title">Флешкарти</div>
+    <div class="progress"><div id="prog1"></div></div>
+    <div class="counter" id="count1"></div>
+    <div class="card-scene">
+      <div class="card" id="card">
+        <div class="face front">
+          <div class="face-label">🔎 Знайди займенники та визнач їхній розряд</div>
+          <p class="q" id="qText"></p>
+          <p style="margin-top:auto;color:var(--muted);font-weight:600">🗣️ Дай відповідь усно, а потім переверни картку.</p>
+        </div>
+        <div class="face back" aria-hidden="true">
+          <div class="face-label">✅ Правильна відповідь</div>
+          <div class="a" id="aText"></div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="actions" id="flipRow"><button class="btn btn-main" id="flipBtn">Перевернути картку</button></div>
+    <div class="actions hidden" id="rateRow">
+      <button class="btn btn-ok" id="rightBtn">⭐ Я відповів(-ла) правильно</button>
+      <button class="btn btn-bad" id="wrongBtn">Я помилився(-лася)</button>
+    </div>
+  </div>
+
+  <!-- stage 2 -->
+  <div class="wrap hidden" id="stage2">
+    <div class="section-title">Розряди займенника</div>
+    <p class="lead">Перетягни кожен займенник у правильний рядок таблиці. Можна також торкнутися займенника, а потім рядка.</p>
+    <div style="overflow-x:auto">
+      <table class="ptable">
+        <thead><tr><th>Розряд</th><th>Приклад</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="pool-wrap">
+      <div class="pool-head">Займенники <span id="left"></span></div>
+      <div class="pool" id="pool"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section id="final" class="hero hidden">
+  <div class="hero-inner">
+    <div class="big-star">🌟</div>
+    <div class="score" id="finalScore"></div>
+    <div class="breakdown" id="breakdown"></div>
+    <div class="quote" id="quote"></div>
+    <button class="btn btn-main" id="againBtn">Пройти шлях ще раз</button>
+  </div>
+</section>
+
+<script>
+const CARDS = [
+ ["Любов виникає з любові, коли хочу, щоб мене любили, я сам перший люблю (Г. Сковорода)",
+  "Мене, я - особові. Сам - означальний."],
+ ["Той, хто не вірить у дива, ніколи їх і не отримає. (Роальд Дал)",
+  "Той - вказівний. Хто-відносний. Їх - особовий."],
+ ["Є тільки один спосіб уникнути критики: нічого не робіть, нічого не говоріть і будьте ніким. (Арістотель)",
+  "Нічого, ніким - заперечні."],
+ ["У всьому є своя краса, але не кожен може її побачити. (Конфуцій)",
+  "Всьому - означальний. Своя - присвійний. Кожен - означальний. Її - особовий."],
+ ["Потрібно знаходити головне в самому собі, де б ти не був. (Е. Гемінґвей)",
+  "Самому - означальний. Собі - зворотний. Ти - особовий."],
+ ["Деякі речі можуть заволодіти вашою увагою, але краще зосередьтеся на тих, які заволодівають вашим серцем. (Індійська мудрість)",
+  "Деякі - неозначений. Вашою, вашим - присвійні. Тих - вказівний. Які - відносний."]
+];
+
+const RANKS = [
+ {id:"os", name:"Особові", words:["я","ти","ми","ви","вони","він"]},
+ {id:"zv", name:"Зворотний", note:"(не має форми Н.в.)", words:["себе"]},
+ {id:"pr", name:"Присвійні", words:["мій","твій","свій","ваш","їхній","його","її"]},
+ {id:"vk", name:"Вказівні", words:["той","цей","такий","стільки"]},
+ {id:"pt", name:"Питальні", note:"(містять запитання про предмет, ознаку, кількість)", words:["хто?","що?","чий?","котрий?","який?"]},
+ {id:"vd", name:"Відносні", words:["хто","що","який","чий","котрий"]},
+ {id:"oz", name:"Означальні", words:["весь","всякий","кожний","інший","сам","самий"]},
+ {id:"ne", name:"Неозначені", words:["дехто","абиякийсь","казна-чий","котрийсь"]},
+ {id:"zp", name:"Заперечні", note:"(творяться за допомогою частки «ні»)", words:["нічий","ніщо","ніскільки"]}
+];
+
+const $ = id => document.getElementById(id);
+let stars=0, cardStars=0, tableStars=0, idx=0, deck=[], selected=null, totalChips=0, placed=0;
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function floatAt(text,minus){
+  const r=$("stars").getBoundingClientRect();
+  const f=document.createElement("div");
+  f.className="float"+(minus?" minus":"");
+  f.textContent=text;
+  f.style.left=(r.left+r.width/2-20)+"px"; f.style.top=(r.bottom+4)+"px";
+  document.body.appendChild(f); setTimeout(()=>f.remove(),1000);
+}
+function bump(cls){const s=$("stars");s.classList.remove("pop","hit");void s.offsetWidth;s.classList.add(cls)}
+function gain(stage){stars++; stage===1?cardStars++:tableStars++; $("starCount").textContent=stars; bump("pop"); floatAt("+1 ⭐")}
+function lose(stage){
+  bump("hit");
+  if(stars>0){stars--; if(stage===1&&cardStars>0)cardStars--; else if(stage===2&&tableStars>0)tableStars--; else if(cardStars>0)cardStars--; else tableStars--;
+    $("starCount").textContent=stars; floatAt("⭐",true)}
+}
+
+/* ---------- stage 1 ---------- */
+function showCard(){
+  const [q,a]=deck[idx];
+  $("card").classList.remove("flipped");
+  $("card").querySelector(".back").setAttribute("aria-hidden","true");
+  setTimeout(()=>{ $("aText").innerHTML=a; },idx?250:0);
+  $("qText").textContent=q;
+  $("flipRow").classList.remove("hidden");
+  $("rateRow").classList.add("hidden");
+  $("count1").textContent=`Картка ${idx+1} з ${deck.length}`;
+  $("prog1").style.width=(idx/deck.length*100)+"%";
+}
+$("flipBtn").onclick=()=>{
+  $("card").classList.add("flipped");
+  $("card").querySelector(".back").setAttribute("aria-hidden","false");
+  $("flipRow").classList.add("hidden");
+  $("rateRow").classList.remove("hidden");
+  $("rightBtn").disabled=$("wrongBtn").disabled=false;
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+function rate(ok){
+  $("rightBtn").disabled=$("wrongBtn").disabled=true;
+  ok?gain(1):lose(1);
+  setTimeout(()=>{ idx++; idx<deck.length?showCard():startStage2(); },650);
+}
+$("rightBtn").onclick=()=>rate(true);
+$("wrongBtn").onclick=()=>rate(false);
+
+/* ---------- stage 2 ---------- */
+function startStage2(){
+  $("prog1").style.width="100%";
+  $("stage1").classList.add("hidden");
+  $("stage2").classList.remove("hidden");
+  $("stageName").textContent="Етап 2 · Розряди займенника";
+  window.scrollTo(0,0);
+  const tb=$("tbody"); tb.innerHTML="";
+  RANKS.forEach(r=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="rank">${r.name}${r.note?`<small>${r.note}</small>`:""}</td><td><div class="zone" data-cat="${r.id}" role="button" tabindex="0" aria-label="${r.name}"></div></td>`;
+    tb.appendChild(tr);
+  });
+  const chips=[]; RANKS.forEach(r=>r.words.forEach(w=>chips.push({w,cat:r.id})));
+  totalChips=chips.length; placed=0;
+  const pool=$("pool"); pool.innerHTML="";
+  shuffle(chips).forEach(c=>{
+    const b=document.createElement("button");
+    b.className="chip"; b.textContent=c.w; b.dataset.cat=c.cat;
+    attachDrag(b); pool.appendChild(b);
+  });
+  document.querySelectorAll(".zone").forEach(z=>{
+    z.addEventListener("click",()=>{ if(selected) attempt(selected,z) });
+    z.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ")&&selected){e.preventDefault();attempt(selected,z)} });
+  });
+  updateLeft();
+}
+function updateLeft(){ $("left").textContent=`залишилось ${totalChips-placed} з ${totalChips}` }
+function select(chip){
+  if(selected) selected.classList.remove("sel");
+  if(selected===chip){selected=null;$("stage2").classList.remove("selecting");return}
+  selected=chip; chip.classList.add("sel"); $("stage2").classList.add("selecting");
+}
+function attempt(chip,zone){
+  chip.classList.remove("sel"); selected=null; $("stage2").classList.remove("selecting");
+  if(chip.dataset.cat===zone.dataset.cat){
+    chip.classList.add("placed"); chip.disabled=true; chip.tabIndex=-1;
+    zone.appendChild(chip); placed++; gain(2); updateLeft();
+    const need=RANKS.find(r=>r.id===zone.dataset.cat).words.length;
+    if(zone.children.length===need) zone.classList.add("done");
+    if(placed===totalChips) setTimeout(finish,900);
+  } else {
+    lose(2);
+    chip.classList.remove("shake"); void chip.offsetWidth; chip.classList.add("shake");
+    zone.classList.add("wrong"); setTimeout(()=>zone.classList.remove("wrong"),500);
+  }
+}
+function clearGhosts(){
+  document.querySelectorAll(".ghost").forEach(g=>g.remove());
+  document.querySelectorAll(".chip.dragging").forEach(c=>c.classList.remove("dragging"));
+  document.querySelectorAll(".zone.over").forEach(z=>z.classList.remove("over"));
+}
+window.addEventListener("pointerup",()=>setTimeout(clearGhosts,0));
+window.addEventListener("pointercancel",()=>setTimeout(clearGhosts,0));
+window.addEventListener("blur",clearGhosts);
+function attachDrag(chip){
+  let st=null;
+  chip.addEventListener("pointerdown",e=>{
+    if(chip.classList.contains("placed")||!e.isPrimary) return;
+    clearGhosts();
+    st={x:e.clientX,y:e.clientY,moved:false,ghost:null,over:null};
+    try{chip.setPointerCapture(e.pointerId)}catch(_){}
+  });
+  chip.addEventListener("dragstart",e=>e.preventDefault());
+  chip.addEventListener("lostpointercapture",()=>{ if(st){ clearGhosts(); st=null; } });
+  chip.addEventListener("pointermove",e=>{
+    if(!st) return;
+    if(!st.moved && Math.hypot(e.clientX-st.x,e.clientY-st.y)>6){
+      st.moved=true; st.ghost=chip.cloneNode(true); st.ghost.classList.add("ghost");
+      st.ghost.classList.remove("sel"); document.body.appendChild(st.ghost); chip.classList.add("dragging");
+    }
+    if(st.moved){
+      st.ghost.style.left=e.clientX+"px"; st.ghost.style.top=e.clientY+"px";
+      const el=document.elementFromPoint(e.clientX,e.clientY);
+      const z=el&&el.closest(".zone");
+      if(st.over&&st.over!==z) st.over.classList.remove("over");
+      if(z) z.classList.add("over"); st.over=z;
+      const topLimit=document.querySelector(".topbar").getBoundingClientRect().bottom+40;
+      const poolTop=document.querySelector(".pool-wrap").getBoundingClientRect().top;
+      if(e.clientY<topLimit) window.scrollBy(0,-14);
+      else if(e.clientY>poolTop-50 && e.clientY<poolTop+10) window.scrollBy(0,14);
+    }
+  });
+  const end=e=>{
+    if(!st) return;
+    if(st.moved){
+      st.ghost.remove(); chip.classList.remove("dragging");
+      if(st.over){st.over.classList.remove("over"); attempt(chip,st.over)}
+    } else if(e.type==="pointerup") select(chip);
+    st=null;
+  };
+  chip.addEventListener("pointerup",end);
+  chip.addEventListener("pointercancel",end);
+  chip.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();select(chip)} });
+}
+
+/* ---------- final ---------- */
+function finish(){
+  const max=CARDS.length+totalChips, p=stars/max;
+  $("game").classList.add("hidden"); document.body.classList.remove("playing");
+  $("final").classList.remove("hidden"); window.scrollTo(0,0);
+  $("finalScore").innerHTML=`${stars} ⭐ <small>з ${max}</small>`;
+  $("breakdown").textContent=`Флешкарти: ${cardStars} ⭐ · Таблиця розрядів: ${tableStars} ⭐`;
+  let q;
+  if(p>=0.9) q="Ти сяєш яскравіше за найяскравішу зірку! Займенники тепер — твої союзники на іспиті! ✨";
+  else if(p>=0.7) q="Чудовий результат! До зірок залишилося зовсім трохи — ще одне повторення, і вершина твоя 🚀";
+  else if(p>=0.5) q="Гарний шлях! Повтори правила, на яких спіткнувся(-лася), і наступного разу зірок буде значно більше 💜";
+  else q="Кожна зірка колись була лише маленькою іскрою. Повтори матеріал і спробуй ще раз — у тебе неодмінно вийде 🌱";
+  $("quote").textContent=q;
+}
+
+/* ---------- start / restart ---------- */
+function start(){
+  stars=cardStars=tableStars=idx=0; selected=null; $("starCount").textContent=0;
+  deck=CARDS.slice();
+  $("start").classList.add("hidden"); $("final").classList.add("hidden");
+  $("game").classList.remove("hidden"); document.body.classList.add("playing");
+  $("stage1").classList.remove("hidden"); $("stage2").classList.add("hidden");
+  $("stageName").textContent="Етап 1 · Флешкарти";
+  window.scrollTo(0,0); showCard();
+}
+$("startBtn").onclick=start;
+$("againBtn").onclick=start;
+</script>
+</body>
+</html>
